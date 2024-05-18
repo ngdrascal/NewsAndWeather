@@ -1,0 +1,44 @@
+﻿@page "/"
+
+@using WeatherDataClients
+
+@inject IWeatherClientCache WeatherClientCache
+
+<PageTitle>News and Weather</PageTitle>
+
+@if (_weatherData == null)
+{
+    <p><em>@_message</em></p>
+}
+else
+{
+    <div class="card-group">
+        @foreach (var item in _weatherData.DailyForecasts.Take(5))
+        {
+            <DailyForecast Date="@item.Date"
+                           LowTemp="@item.LowTemp"
+                           HighTemp="@item.HighTemp"
+                           Description="Partly Sunny"
+                           Icon="02d" />
+        }
+    </div>
+}
+
+@code
+{
+    private string _message = "Loading ...";
+    private WeatherData? _weatherData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var client = WeatherClientCache.GetClient("Nashville");
+            _weatherData = await client.GetAllForecastData();
+        }
+        catch (Exception)
+        {
+            _message = "Forecasts currently unavailable.";
+        }
+    }
+}
