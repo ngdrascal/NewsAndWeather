@@ -15,7 +15,7 @@ public class LocationProviderTests
     private const double Location2Latitude = 36.1503;
     private const double Location2Longitude = -86.8133;
 
-    private IConfiguration BuildLocationConfiguration()
+    private IConfiguration BuildConfiguration()
     {
         var configBuilder = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
@@ -33,24 +33,86 @@ public class LocationProviderTests
         return configBuilder.Build();
     }
 
-    [Test]
-    public void Test()
+    private IConfiguration BuildConfiguration(string? name, string? latitude, string? longitude)
     {
-        var config = BuildLocationConfiguration();
+        var configBuilder = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["Weather:ApiKey"] = "<your_API_key_goes_here>",
+                ["Weather:CacheDuration"] = "1",
+                ["Weather:Locations:0:Name"] = name,
+                ["Weather:Locations:0:Latitude"] = latitude,
+                ["Weather:Locations:0:Longitude"] = longitude
+            });
 
-        var locationSection = config.GetRequiredSection("Weather:Locations");
-        var locationArray = locationSection.GetChildren();
+        return configBuilder.Build();
+    }
 
-        var locations = locationArray.Select(configSect =>
-        {
-            var name = configSect.GetValue<string>("Name");
-            var latitude = configSect.GetValue<double>("Latitude");
-            var longitude = configSect.GetValue<double>("Longitude");
+    // GIVEN: Configuration with a null or blank location name
+    // WHEN: GetAll() is called
+    // THEN: An InvalidOperationException is thrown
+    [TestCase(null)]
+    [TestCase("")]
+    public void NameIsRequired(string? name)
+    {
+        var config = BuildConfiguration(name, "0.0", "0.0");
+        var locationProvider = new LocationProvider(config);
+        var expectedMessage = "Location name is required";
 
-            return new Location(name, latitude, longitude);
-        }).ToArray();
+        // ACT:
 
-        Assert.That(locations.Length, Is.EqualTo(2));
+        // ASSERT:
+        Assert.Throws<InvalidOperationException>(() => locationProvider.GetAll(), expectedMessage);
+    }
+
+    // GIVEN: Configuration with a null or blank value for latitude
+    // WHEN: GetAll() is called
+    // THEN: An InvalidOperationException is thrown
+    [TestCase("TestNull", null)]
+    [TestCase("TestEmpty", "")]
+    public void LatitudeIsRequired(string name, string? latitude)
+    {
+        var config = BuildConfiguration(name, latitude, "0.0");
+        var locationProvider = new LocationProvider(config);
+        var expectedMessage = "Location latitude is required for " + name;
+
+        // ACT:
+
+        // ASSERT:
+        Assert.Throws<InvalidOperationException>(() => locationProvider.GetAll(), expectedMessage);
+    }
+
+    // GIVEN: Configuration with a null or blank value for longitude
+    // WHEN: GetAll() is called
+    // THEN: An InvalidOperationException is thrown
+    [TestCase("TestNull", null)]
+    [TestCase("TestEmpty", "")]
+    public void LongitudeIsRequired(string name, string? longitude)
+    {
+        var config = BuildConfiguration(name, "0.0", longitude);
+        var locationProvider = new LocationProvider(config);
+        var expectedMessage = "Location longitude is required for " + name;
+
+        // ACT:
+
+        // ASSERT:
+        Assert.Throws<InvalidOperationException>(() => locationProvider.GetAll(), expectedMessage);
+    }
+
+
+    // GIVEN: Configuration with an
+    // WHEN: GetAll() is called
+    // THEN: An InvalidOperationException is thrown
+    [Test]
+    public void LatitudeIsRequired()
+    {
+        var config = BuildConfiguration("Home", "null", "76.54321");
+        var locationProvider = new LocationProvider(config);
+
+        // ACT:
+
+        // ASSERT:
+        Assert.Throws<InvalidOperationException>(() => locationProvider.GetAll());
     }
 
     // GIVEN: Configuration data will multiple locations
@@ -60,7 +122,7 @@ public class LocationProviderTests
     public void GetReturnsLocation()
     {
         // ARRANGE:
-        var config = BuildLocationConfiguration();
+        var config = BuildConfiguration();
         var locationProvider = new LocationProvider(config);
 
         // ACT:
@@ -80,7 +142,7 @@ public class LocationProviderTests
     public void GetAllReturnsAllLocations()
     {
         // ARRANGE:
-        var config = BuildLocationConfiguration();
+        var config = BuildConfiguration();
 
         var locationProvider = new LocationProvider(config);
 
