@@ -2,18 +2,18 @@
 
 namespace WeatherDataClients;
 
-public class WeatherOptions
+public sealed class WeatherOptions
 {
     public const string SectionName = "Weather";
 
-    public string ApiKey { get; set; }
-    public int CacheDuration { get; set; }
-    public LocationOption[] Locations { get; set; }
+    public required string ApiKey { get; set; }
+    public required int CacheDuration { get; set; }
+    public required LocationsOption[] Locations { get; set; }
 }
 
-public class LocationOption
+public sealed class LocationsOption
 {
-    public string Name { get; set; }
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
+    public required string Name { get; set; }
+    public required double Latitude { get; set; }
+    public required double Longitude { get; set; }
 }

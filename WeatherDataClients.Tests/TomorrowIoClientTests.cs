@@ -1,7 +1,10 @@
 ﻿using ResilientHttpClient;
+using System.Diagnostics.CodeAnalysis;
 using WeatherDataClients.TomorrowIO;
 
 namespace WeatherDataClients.Tests;
+
+[ExcludeFromCodeCoverage]
 
 public class TomorrowIoClientTests
 {

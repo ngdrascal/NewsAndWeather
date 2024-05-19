@@ -6,6 +6,8 @@ namespace WeatherDataClients
     {
         private readonly IConfiguration _configuration;
 
+        private const string LocationSectionName = "Weather:Locations";
+
         public LocationProvider(IConfiguration configuration)
         {
             if (configuration is null)
@@ -16,30 +18,42 @@ namespace WeatherDataClients
 
         public Location? Get(string name)
         {
-            var options = _configuration.GetSection(WeatherOptions.SectionName).Get<WeatherOptions>();
-            if (options is null)
-                throw new InvalidOperationException($"Missing '{WeatherOptions.SectionName}' section in configuration");
-
-            if (options.Locations is null)
-                throw new InvalidOperationException($"Missing '{WeatherOptions.SectionName}:Locations' section in configuration");
-
-            var locOption = options.Locations.FirstOrDefault(l => l.Name == name);
-            if (locOption is null)
-                return null;
-
-            return new Location(locOption.Name, locOption.Latitude, locOption.Longitude);
+            var locations = GetAll();
+            return locations.FirstOrDefault(loc => loc.Name == name);
         }
 
         public IEnumerable<Location> GetAll()
         {
-            var options = _configuration.GetSection(WeatherOptions.SectionName).Get<WeatherOptions>();
-            if (options is null)
-                throw new InvalidOperationException($"Missing '{WeatherOptions.SectionName}' section in configuration");
+            var locationSection = _configuration.GetRequiredSection(LocationSectionName);
+            if (locationSection is null)
+                throw new InvalidOperationException($"Missing '{LocationSectionName}' section in configuration");
 
-            if (options.Locations is null)
-                throw new InvalidOperationException($"Missing '{WeatherOptions.SectionName}:Locations' section in configuration");
+            var locationArray = locationSection.GetChildren().ToArray();
+            if (locationArray.Length == 0)
+                throw new InvalidOperationException("No locations found in configuration");
 
-            return options.Locations.Select(l => new Location(l.Name, l.Latitude, l.Longitude));
+            var locations = locationArray.Select(configSect =>
+            {
+                var name = configSect.GetValue<string>("Name");
+                if (string.IsNullOrWhiteSpace(name))
+                    throw new InvalidOperationException("Location name is required");
+
+                var latitude = configSect.GetValue("Latitude", double.MaxValue);
+                if (Math.Abs(latitude - double.MaxValue) < 0.1)
+                    throw new InvalidOperationException($"Location latitude is required for {name}");
+                if (Math.Abs(latitude) > 90.0)
+                    throw new InvalidOperationException($"Latitude for location {name} is outside the range of -90 to +90");
+
+                var longitude = configSect.GetValue("Longitude", double.MaxValue);
+                if (Math.Abs(longitude - double.MaxValue) < 0.1)
+                    throw new InvalidOperationException($"Location longitude is required for {name}");
+                if (Math.Abs(latitude) > 90.0)
+                    throw new InvalidOperationException($"Longitude for location {name} is outside the range of -180 to +180");
+
+                return new Location(name, latitude, longitude);
+            }).ToArray();
+
+            return locations;
         }
     }
 }
