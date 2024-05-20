@@ -3,10 +3,13 @@
 public class WeatherData
 {
     public WeatherData(
+        string locationName,
         CurrentConditions currentConditions,
         HourlyForecast[] hourlyForecasts,
         DailyForecast[] dailyForecasts)
     {
+        if (string.IsNullOrEmpty(locationName))
+            throw new ArgumentException("Value cannot be null or empty.", nameof(locationName));
         if (currentConditions is null)
             throw new ArgumentNullException(nameof(currentConditions));
         if (hourlyForecasts is null)
@@ -14,11 +17,13 @@ public class WeatherData
         if (dailyForecasts is null)
             throw new ArgumentNullException(nameof(dailyForecasts));
 
+        LocationName = locationName;
         CurrentConditions = currentConditions;
         HourlyForecasts = hourlyForecasts;
         DailyForecasts = dailyForecasts;
     }
 
+    public string LocationName { get; }
     public CurrentConditions CurrentConditions { get; }
     public HourlyForecast[] HourlyForecasts { get; }
     public DailyForecast[] DailyForecasts { get; }

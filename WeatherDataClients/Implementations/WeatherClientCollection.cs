@@ -2,13 +2,13 @@
 
 namespace WeatherDataClients;
 
-public class WeatherClientCache : IWeatherClientCache
+public class WeatherClientCollection : IWeatherClientCollection
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _apiKey;
     private readonly IDictionary<string, IWeatherClient> _clients = new Dictionary<string, IWeatherClient>();
 
-    public WeatherClientCache(IHttpClientFactory httpClientFactory, string apiKey)
+    public WeatherClientCollection(IHttpClientFactory httpClientFactory, string apiKey)
     {
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         if (string.IsNullOrWhiteSpace(apiKey))
@@ -42,4 +42,8 @@ public class WeatherClientCache : IWeatherClientCache
         return _clients[name.ToUpper()];
     }
 
+    public IEnumerable<IWeatherClient> GetAll()
+    {
+        return _clients.Values;
+    }
 }

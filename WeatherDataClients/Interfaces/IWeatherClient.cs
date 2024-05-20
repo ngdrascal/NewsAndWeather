@@ -2,5 +2,5 @@
 
 public interface IWeatherClient
 {
-    Task<WeatherData?> GetAllForecastData();
+    Task<WeatherData?> GetForecastsAsync();
 }

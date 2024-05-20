@@ -2,7 +2,7 @@
 
 @using WeatherDataClients
 
-@inject IWeatherClientCache WeatherClientCache
+@inject IWeatherClientCollection WeatherClientCollection
 
 <PageTitle>News and Weather</PageTitle>
 
@@ -33,8 +33,8 @@ else
     {
         try
         {
-            var client = WeatherClientCache.GetClient("Nashville");
-            _weatherData = await client.GetAllForecastData();
+            var client = WeatherClientCollection.GetClient("Nashville");
+            _weatherData = await client.GetForecastsAsync();
         }
         catch (Exception)
         {

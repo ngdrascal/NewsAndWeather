@@ -15,11 +15,11 @@ builder.Services
 builder.Services.AddSingleton<IHttpClientFactory, ResilientHttpClientFactory>();
 builder.Services.AddSingleton<IApiKeyProvider, ApiKeyProvider>();
 builder.Services.AddSingleton<ILocationProvider, LocationProvider>();
-builder.Services.AddSingleton<IWeatherClientCache>(sp =>
+builder.Services.AddSingleton<IWeatherClientCollection>(sp =>
 {
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     var apiKeyProvider = sp.GetRequiredService<IApiKeyProvider>();
-    var clientCache = new WeatherClientCache(httpClientFactory, apiKeyProvider.GetApiKey());
+    var clientCache = new WeatherClientCollection(httpClientFactory, apiKeyProvider.GetApiKey());
 
     var locProvider = sp.GetRequiredService<ILocationProvider>();
     var locations = locProvider.GetAll();

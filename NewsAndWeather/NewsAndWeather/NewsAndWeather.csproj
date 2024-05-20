@@ -7,10 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\scripts\**" />
+    <Content Remove="wwwroot\scripts\**" />
+    <EmbeddedResource Remove="wwwroot\scripts\**" />
+    <None Remove="wwwroot\scripts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\ResilientHttpClient\ResilientHttpClient.csproj" />
     <ProjectReference Include="..\..\WeatherDataClients\WeatherDataClients.csproj" />
     <ProjectReference Include="..\NewsAndWeather.Client\NewsAndWeather.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

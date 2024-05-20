@@ -11,6 +11,7 @@
 </div>
 
 @code {
+    [Parameter] public string LocationName { get; set; }
     [Parameter] public DateTimeOffset Date { get; set; }
     [Parameter] public double HighTemp { get; set; }
     [Parameter] public double LowTemp { get; set; }
@@ -22,7 +23,7 @@
 
     protected override void OnInitialized()
     {
-        _forecastDate = Date.LocalDateTime.ToLongDateString();
+        _forecastDate = Date.LocalDateTime.ToString("ddd MMM d");
 
         _iconUrl = $"https://openweathermap.org/img/wn/{Icon}@2x.png";
     }

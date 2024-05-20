@@ -27,7 +27,7 @@ public class OpenWeatherClient : IWeatherClient
         _lastCacheRefresh = DateTime.MinValue;
     }
 
-    public async Task<WeatherData?> GetAllForecastData()
+    public async Task<WeatherData?> GetForecastsAsync()
     {
         if (_lastCacheRefresh + _cacheDuration > DateTime.Now)
             return _cache;
@@ -86,6 +86,7 @@ public class OpenWeatherClient : IWeatherClient
         }
 
         return new WeatherData(
+            _location.Name,
              currentConditions,
              hourlyForecasts.ToArray(),
              dailyForecasts.ToArray()
