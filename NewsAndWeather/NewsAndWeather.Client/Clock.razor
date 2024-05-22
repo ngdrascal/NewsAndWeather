@@ -1,0 +1,49 @@
+﻿@using System.Timers
+@implements IDisposable
+@rendermode @(new InteractiveServerRenderMode(false))
+
+<span class="clock-time">@_hours</span>
+<span class="clock-colon blink">:</span>
+<span class="clock-time">@_minutes</span>
+<span class="clock-meridiem" style="padding-left:10px">@_meridiem</span>
+<span class="clock-date">@_date</span>
+
+@code {
+    private Timer? _timer;
+    private string? _hours;
+    private string? _minutes;
+    private string? _meridiem;
+    private string? _date;
+
+    protected override void OnInitialized()
+    {
+        FormatDateAndTime(DateTime.Now);
+
+        _timer = new Timer(1000);
+        _timer.AutoReset = true;
+        _timer.Enabled = true;
+        _timer.Elapsed += (_, _) => OnTimerElapsed();
+    }
+
+    private void FormatDateAndTime(DateTime currentDateTime)
+    {
+        _hours = currentDateTime.ToString("hh");
+        _minutes = currentDateTime.ToString("mm");
+        _meridiem = currentDateTime.ToString("tt");
+        _date = currentDateTime.ToString("MMMM d");
+    }
+
+    private void OnTimerElapsed()
+    {
+        _ = InvokeAsync(() =>
+        {
+            FormatDateAndTime(DateTime.Now);
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+}
