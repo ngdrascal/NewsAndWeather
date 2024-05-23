@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@rendermode @(new InteractiveServerRenderMode(false))
 @using WeatherDataClients
 
 @inject IWeatherClientCollection WeatherClientCollection
@@ -8,35 +8,52 @@
 
 <Clock />
 
-@if (_weatherData == null)
+@if (_locationWeather.Count == 0)
 {
     <p><em>@_message</em></p>
 }
 else
 {
-    <div class="card-group">
-        @foreach (var item in _weatherData.DailyForecasts.Take(5))
-        {
-            <DailyForecast Date="@item.Date"
-                           LowTemp="@item.LowTemp"
-                           HighTemp="@item.HighTemp"
-                           Description="Partly Sunny"
-                           Icon="02d" />
-        }
+    <div id="daily-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            Console.WriteLine(lw.LocationName);
+            <div class="carousel-item active">
+                <div class="card-group">
+                    @foreach (var item in _locationWeather[0].DailyForecasts.Take(5))
+                    {
+                        <DailyForecast Date="@item.Date"
+                                       LowTemp="@item.LowTemp"
+                                       HighTemp="@item.HighTemp"
+                                       Description="Partly Sunny"
+                                       Icon="02d" />
+                    }
+                </div>
+            </div>
+            <div class="carousel-item">
+                <p>Current Conditions for _locationWeather[0].LocationName</p>
+
+            </div>
+        </div>
     </div>
 }
 
 @code
 {
     private string _message = "Loading ...";
-    private WeatherData? _weatherData;
+    private readonly List<WeatherData> _locationWeather = new();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var client = WeatherClientCollection.GetClient("Nashville");
-            _weatherData = await client.GetForecastsAsync();
+            foreach (var client in WeatherClientCollection.GetAll())
+            {
+                var data = await client.GetForecastsAsync();
+                if (data != null)
+                    _locationWeather.Add(data);
+
+            }
+
         }
         catch (Exception)
         {

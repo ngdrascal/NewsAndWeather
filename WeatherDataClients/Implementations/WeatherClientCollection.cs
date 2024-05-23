@@ -30,7 +30,8 @@ public class WeatherClientCollection : IWeatherClientCollection
         if (_clients.ContainsKey(name))
             return;
 
-        var client = new OpenWeatherClient(_httpClientFactory, _apiKey, location, cacheDuration);
+        var httpClient = _httpClientFactory.CreateClient(name);
+        var client = new OpenWeatherClient(httpClient, _apiKey, location, cacheDuration);
         _clients.Add(name, client);
     }
 

@@ -14,17 +14,25 @@ public class OpenWeatherClient : IWeatherClient
     private WeatherData? _cache;
     private DateTime _lastCacheRefresh;
 
-    public OpenWeatherClient(IHttpClientFactory httpClientFactory, string apiKey,
+    public OpenWeatherClient(HttpClient httpClient, string apiKey,
         Location location, TimeSpan cacheDuration)
     {
         var clientKey = location.Name;
-        _httpClient = httpClientFactory.CreateClient(clientKey);
+        // _httpClient = httpClientFactory.CreateClient(clientKey);
+        _httpClient = httpClient;
         _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         _apiKey = apiKey;
         _location = location;
         _cacheDuration = cacheDuration;
         _cache = null;
         _lastCacheRefresh = DateTime.MinValue;
+    }
+
+    public Location Location => _location;
+
+    public WeatherData? GetForecasts()
+    {
+        return GetForecastsAsync().Result;
     }
 
     public async Task<WeatherData?> GetForecastsAsync()

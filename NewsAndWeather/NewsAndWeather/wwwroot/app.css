@@ -118,14 +118,14 @@ code {
 
 .clock-time {
    font-family: 'digital-mono';
-   font-size: 120px;
+   font-size: 150px;
    color: red;
    font-weight: normal;
 }
 
 .clock-colon {
-   font-family: 'digital';
-   font-size: 120px;
+   font-family: 'digital-mono';
+   font-size: 150px;
    color: red;
    font-weight: normal;
 }
