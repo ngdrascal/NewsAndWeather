@@ -15,7 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDataClients.Tests", "WeatherDataClients.Tests\WeatherDataClients.Tests.csproj", "{A5ABEED5-B98E-4736-A463-DDD3360D1A6A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAssemblyOnlyApp", "WebAssemblyOnlyApp\WebAssemblyOnlyApp.csproj", "{E9665E4B-4C73-4425-920E-47DB365169DF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD988764-708B-424A-AB47-6185F95AAB97}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +46,6 @@ Global
 		{A5ABEED5-B98E-4736-A463-DDD3360D1A6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5ABEED5-B98E-4736-A463-DDD3360D1A6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5ABEED5-B98E-4736-A463-DDD3360D1A6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9665E4B-4C73-4425-920E-47DB365169DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9665E4B-4C73-4425-920E-47DB365169DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9665E4B-4C73-4425-920E-47DB365169DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9665E4B-4C73-4425-920E-47DB365169DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
