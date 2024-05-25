@@ -17,21 +17,21 @@ public class WeatherClientCollection : IWeatherClientCollection
         _apiKey = apiKey;
     }
 
-    public void AddClient(string name, Location location, TimeSpan cacheDuration)
+    public void AddClient(Location location, TimeSpan cacheDuration)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException($"Parameter {nameof(name)} cannot be null or empty", nameof(name));
-
         if (location is null)
             throw new ArgumentNullException(nameof(location));
 
-        name = name.ToUpper();
+        if (string.IsNullOrWhiteSpace(location.Name))
+            throw new ArgumentException($"Parameter {nameof(location)} cannot have a null or empty {nameof(location.Name)}", 
+                nameof(location.Name));
+
+        var name = location.Name.ToUpper();
 
         if (_clients.ContainsKey(name))
             return;
 
-        var httpClient = _httpClientFactory.CreateClient(name);
-        var client = new OpenWeatherClient(httpClient, _apiKey, location, cacheDuration);
+        var client = new OpenWeatherClient(_httpClientFactory, _apiKey, location, cacheDuration);
         _clients.Add(name, client);
     }
 

@@ -24,7 +24,7 @@ builder.Services.AddSingleton<IWeatherClientCollection>(sp =>
     var locProvider = sp.GetRequiredService<ILocationProvider>();
     var locations = locProvider.GetAll();
     foreach (var loc in locations)
-        clientCache.AddClient(loc.Name, loc, TimeSpan.FromMinutes(5));
+        clientCache.AddClient(loc, TimeSpan.FromMinutes(5));
 
     return clientCache;
 });

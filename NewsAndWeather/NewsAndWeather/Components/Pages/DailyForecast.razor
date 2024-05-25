@@ -3,15 +3,14 @@
         @_forecastDate
     </div>
     <div class="card-body">
-        <img src="@_iconUrl" />
-        <h4 class="card-title">@Description</h4>
+        <img src="@_iconUrl"  style="width:75px;height:75px;"/>
+        <h6 class="card-title">@Description</h6>
         <b>@((int)HighTemp) F&deg;</b> /
         @((int)LowTemp) F&deg;
     </div>
 </div>
 
 @code {
-    [Parameter] public string? LocationName { get; set; }
     [Parameter] public DateTimeOffset Date { get; set; }
     [Parameter] public double HighTemp { get; set; }
     [Parameter] public double LowTemp { get; set; }

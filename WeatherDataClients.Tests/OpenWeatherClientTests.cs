@@ -17,11 +17,10 @@ public class OpenWeatherClientTests
         var apiKey = Environment.GetEnvironmentVariable("Weather:ApiKey");
         Assert.That(apiKey, Is.Not.Null);
 
-        // var httpClientFactory = new ResilientHttpClientFactory();
-        var httpClient = new HttpClient();
+        var httpClientFactory = new ResilientHttpClientFactory();
         var location = new Location("Central Park", 40.7841, -73.9657);
         var cacheDuration = TimeSpan.FromMinutes(1);
-        var client = new OpenWeatherClient(httpClient, apiKey, location, cacheDuration);
+        var client = new OpenWeatherClient(httpClientFactory, apiKey, location, cacheDuration);
 
         // ACT:
         var weatherData = await client.GetForecastsAsync();
@@ -43,7 +42,7 @@ public class OpenWeatherClientTests
         var locProvider = new LocationProvider(configuration);
         var locations = locProvider.GetAll();
         foreach (var loc in locations)
-            clientCollection.AddClient(loc.Name, loc, TimeSpan.FromMinutes(5));
+            clientCollection.AddClient(loc, TimeSpan.FromMinutes(5));
         var clients = clientCollection.GetAll().ToList();
 
         // ACT:

@@ -14,12 +14,10 @@ public class OpenWeatherClient : IWeatherClient
     private WeatherData? _cache;
     private DateTime _lastCacheRefresh;
 
-    public OpenWeatherClient(HttpClient httpClient, string apiKey,
+    public OpenWeatherClient(IHttpClientFactory httpClientFactory, string apiKey,
         Location location, TimeSpan cacheDuration)
     {
-        var clientKey = location.Name;
-        // _httpClient = httpClientFactory.CreateClient(clientKey);
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient(location.Name);
         _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         _apiKey = apiKey;
         _location = location;
