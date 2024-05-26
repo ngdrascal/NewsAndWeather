@@ -12,7 +12,8 @@ builder.Services
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddSingleton<IHttpClientFactory, ResilientHttpClientFactory>();
+// builder.Services.AddSingleton<IHttpClientFactory, ResilientHttpClientFactory>();
+builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IApiKeyProvider, ApiKeyProvider>();
 builder.Services.AddSingleton<ILocationProvider, LocationProvider>();
 builder.Services.AddSingleton<IWeatherClientCollection>(sp =>

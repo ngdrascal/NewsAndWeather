@@ -1,5 +1,5 @@
 ﻿@page "/"
-@rendermode @(new InteractiveServerRenderMode(false))
+@* @rendermode @(new InteractiveServerRenderMode(false)) *@
 @using WeatherDataClients
 
 @inject IWeatherClientCollection WeatherClientCollection
@@ -8,44 +8,35 @@
 
 <Clock />
 
-@if (_locations.Count == 0)
-{
-    <p><em>@_message</em></p>
-}
-else
-{
-    <div id="daily-carousel" class="carousel slide" data-bs-ride="carousel">
-        <p></p>
-        <div class="carousel-inner">
-            @foreach (var loc in _locations)
-            {
-                Console.WriteLine(loc.LocationName);
-                <div class="carousel-item active">
-                    <div class="card-group">
-                        @foreach (var dailyForecast in loc.DailyForecasts.Take(5))
-                        {
-                            <DailyForecast Date="@dailyForecast.Date"
-                                           LowTemp="@dailyForecast.LowTemp"
-                                           HighTemp="@dailyForecast.HighTemp"
-                                           Description="Partly Sunny"
-                                           Icon="02d"/>
-                        }
-                    </div>
+<div id="weatherCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @foreach (var loc in _locations)
+        {
+            <div class="carousel-item active">
+                <h1>Current conditions for @loc.LocationName</h1>
+            </div>
+            <div class="carousel-item">
+                <h6>@loc.LocationName</h6>
+                <div class="card-group">
+                    @foreach (var dailyForecast in loc.DailyForecasts.Take(5))
+                    {
+                        <DailyForecast Date="@dailyForecast.Date"
+                                       LowTemp="@dailyForecast.LowTemp"
+                                       HighTemp="@dailyForecast.HighTemp"
+                                       Description="Partly Sunny"
+                                       Icon="02d"/>
+                    }
                 </div>
-                <div class="carousel-item">
-                    <p>Current Conditions for _locationWeather[0].LocationName</p>
-
-                </div>
-            }
-        </div>
+            </div>
+        }
     </div>
-}
+</div>
 
 @code
 {
     private string _message = "Loading ...";
     private readonly List<WeatherData> _locations = new();
-
+    
     protected override async Task OnInitializedAsync()
     {
         try
@@ -56,7 +47,6 @@ else
                 if (data != null)
                     _locations.Add(data);
             }
-
         }
         catch (Exception)
         {

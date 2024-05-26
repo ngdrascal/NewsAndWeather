@@ -10,12 +10,9 @@ public class WeatherData
     {
         if (string.IsNullOrEmpty(locationName))
             throw new ArgumentException("Value cannot be null or empty.", nameof(locationName));
-        if (currentConditions is null)
-            throw new ArgumentNullException(nameof(currentConditions));
-        if (hourlyForecasts is null)
-            throw new ArgumentNullException(nameof(hourlyForecasts));
-        if (dailyForecasts is null)
-            throw new ArgumentNullException(nameof(dailyForecasts));
+        ArgumentNullException.ThrowIfNull(currentConditions, nameof(currentConditions));
+        ArgumentNullException.ThrowIfNull(hourlyForecasts, nameof(hourlyForecasts));
+        ArgumentNullException.ThrowIfNull(dailyForecasts,nameof(dailyForecasts));
 
         LocationName = locationName;
         CurrentConditions = currentConditions;
