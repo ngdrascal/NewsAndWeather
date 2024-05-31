@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /NewsAndWeather/NewsAndWeather/wwwroot/libraries/
+/NewsAndWeather/NewsAndWeather/wwwroot/index.html

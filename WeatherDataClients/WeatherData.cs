@@ -40,6 +40,15 @@ public class CurrentConditions
     public double WindSpeed { get; set; }
     public int WindDeg { get; set; }
     public double WindGust { get; set; }
+    public Weather Weather { get; set; }
+}
+
+public class Weather
+{
+    public long Id { get; set; }
+    public string Main { get; set; }
+    public string Description { get; set; }
+    public string Icon { get; set; }
 }
 
 public class DailyForecast
@@ -47,6 +56,7 @@ public class DailyForecast
     public DateTimeOffset Date { get; set; }
     public double HighTemp { get; set; }
     public double LowTemp { get; set; }
+    public Weather Weather { get; set; }
 }
 
 public class HourlyForecast

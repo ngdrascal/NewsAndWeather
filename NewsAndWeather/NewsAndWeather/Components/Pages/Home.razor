@@ -1,42 +1,70 @@
 ﻿@page "/"
-@* @rendermode @(new InteractiveServerRenderMode(false)) *@
 @using WeatherDataClients
 
 @inject IWeatherClientCollection WeatherClientCollection
+@inject IJSRuntime JSRuntime
 
 <PageTitle>News and Weather</PageTitle>
 
-<Clock />
-
-<div id="weatherCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        @foreach (var loc in _locations)
-        {
-            <div class="carousel-item active">
-                <h1>Current conditions for @loc.LocationName</h1>
+@if (_locations.Count == 0)
+{
+    <p><em>@_message</em></p>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <Clock />
             </div>
-            <div class="carousel-item">
-                <h6>@loc.LocationName</h6>
-                <div class="card-group">
-                    @foreach (var dailyForecast in loc.DailyForecasts.Take(5))
-                    {
-                        <DailyForecast Date="@dailyForecast.Date"
-                                       LowTemp="@dailyForecast.LowTemp"
-                                       HighTemp="@dailyForecast.HighTemp"
-                                       Description="Partly Sunny"
-                                       Icon="02d"/>
-                    }
+            <div class="col-3 d-flex align-items-center justify-content-center">
+            </div>
+            <div class="col-3 d-flex align-items-center justify-content-center">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div id="weatherCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach (var loc in _locations)
+                        {
+                            <div class="carousel-item active">
+                                <h5>@loc.LocationName</h5>
+                                <CurrentConditions Conditions="@loc.CurrentConditions"></CurrentConditions>
+                            </div>
+                            <div class="carousel-item">
+                                <h5>@loc.LocationName</h5>
+                                <div class="card-group">
+                                    @foreach (var dailyForecast in loc.DailyForecasts.Take(6))
+                                    {
+                                        <DailyForecast Date="@dailyForecast.Date"
+                                                       LowTemp="@dailyForecast.LowTemp"
+                                                       HighTemp="@dailyForecast.HighTemp"
+                                                       Description="@dailyForecast.Weather.Description"
+                                                       Icon="@dailyForecast.Weather.Icon" />
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
-        }
+        </div>
     </div>
-</div>
+}
+
+<script>
+    window.setActiveCarouselItem = (carouselId, index) => {
+        document.getElementById(carouselId).carousel(index);
+    };
+</script>
 
 @code
 {
     private string _message = "Loading ...";
     private readonly List<WeatherData> _locations = new();
-    
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -48,9 +76,23 @@
                     _locations.Add(data);
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             _message = "Forecasts currently unavailable.";
         }
     }
-}
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SetActiveItem(0);
+        }
+    }
+
+    private async Task SetActiveItem(int index)
+    {
+        await JSRuntime.InvokeVoidAsync("setActiveCarouselItem", "weatherCarousel", 0);
+    }
+    }

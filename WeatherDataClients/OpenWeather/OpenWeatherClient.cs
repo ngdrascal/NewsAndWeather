@@ -64,6 +64,13 @@ public class OpenWeatherClient : IWeatherClient
             WindSpeed = openWeather.current.wind_speed,
             WindDeg = (int)openWeather.current.wind_deg,
             // WindGust = openWeather.current["wind_gust"]
+            Weather = new Weather
+            {
+                Id = openWeather.current.weather[0].id,
+                Main = openWeather.current.weather[0].main,
+                Description = openWeather.current.weather[0].description,
+                Icon = openWeather.current.weather[0].icon
+            }
         };
 
         var hourlyForecasts = new List<HourlyForecast>();
@@ -85,7 +92,14 @@ public class OpenWeatherClient : IWeatherClient
             {
                 Date = DateTimeOffset.FromUnixTimeSeconds(day.dt),
                 HighTemp = day.temp.max,
-                LowTemp = day.temp.min
+                LowTemp = day.temp.min,
+                Weather = new Weather
+                {
+                    Id = day.weather[0].id,
+                    Main = day.weather[0].main,
+                    Description = day.weather[0].description,
+                    Icon = day.weather[0].icon
+                }
             };
 
             dailyForecasts.Add(dailyForecast);

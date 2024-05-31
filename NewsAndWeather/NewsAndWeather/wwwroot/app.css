@@ -1,5 +1,6 @@
 html, body {
    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+   background-color: #262626;
 }
 
 h1:focus {
@@ -118,14 +119,14 @@ code {
 
 .clock-time {
    font-family: 'digital-mono';
-   font-size: 150px;
+   font-size: 130px;
    color: red;
    font-weight: normal;
 }
 
 .clock-colon {
    font-family: 'digital-mono';
-   font-size: 150px;
+   font-size: 130px;
    color: red;
    font-weight: normal;
 }
@@ -139,6 +140,7 @@ code {
 
 .clock-date {
    font-size: 20px;
+   color: white;
    font-weight: normal;
 }
 
@@ -151,7 +153,11 @@ code {
       opacity: 1.0;
    }
 
+   50% {
+      opacity: 0.1;
+   }
+
    to {
-      opacity: 0.0;
+      opacity: 1.0;
    }
 }

@@ -1,0 +1,33 @@
+﻿<div class="card text-center">
+    <div class="card-header">
+       Current Conditions
+    </div>
+    <div class="card-body">
+        <h6>Temp: @_temp&deg;F</h6>
+        <h6>Feels Like: @_feelsLike&deg;F</h6>
+        <h6>Humidity: @_humidity%</h6>
+    </div>
+</div>
+
+<h6>Temp: @_temp&deg;F</h6>
+<h6>Feels Like: @_feelsLike&deg;F</h6>
+<h6>Humidity: @_humidity%</h6>
+
+@code {
+    [Parameter] public WeatherDataClients.CurrentConditions? Conditions { get; set; }
+
+    private string _temp = string.Empty;
+    private string _feelsLike = string.Empty;
+    private string _humidity = string.Empty;
+
+    protected override Task OnInitializedAsync()
+    {
+        ArgumentNullException.ThrowIfNull(Conditions, nameof(Conditions));
+
+        _temp = Conditions.Temperature.ToString("F0");
+        _feelsLike = Conditions.FeelsLike.ToString("F0");
+        _humidity = Conditions.Humidity.ToString("F0");
+
+        return Task.CompletedTask;
+    }
+}
