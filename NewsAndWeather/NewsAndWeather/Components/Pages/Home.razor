@@ -28,7 +28,7 @@
                         @foreach (var loc in _locations)
                         {
                             <div class="carousel-item active">
-                                <h5 class="default-color">@loc.LocationName</h5>
+                                <h5>@loc.LocationName</h5>
                                 <div class="card-group">
                                     @foreach (var dailyForecast in loc.DailyForecasts.Take(6))
                                     {
