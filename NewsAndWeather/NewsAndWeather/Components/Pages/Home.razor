@@ -6,28 +6,23 @@
 
 <PageTitle>News and Weather</PageTitle>
 
-@if (_locations.Count == 0)
-{
-    <p><em>@_message</em></p>
-}
-else
-{
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-6">
-                <Clock />
-            </div>
-            <div class="col-6">
-                <h3>Current Condition</h3>
-                <h5>Nashville</h5>
-                <img src="https://openweathermap.org/img/wn/01d@2x.png" style="width:75px;height:75px;" />
-                <h6>clear sky</h6>
-                <h6><b>78&#xB0;F</b>/57&deg;F</h6>
-            </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <Clock />
         </div>
+        <div class="col-6">
+            @if (_locations.Count > 0)
+            {
+                <CurrentConditions Conditions="@_locations[0].CurrentConditions" />
+            }
+        </div>
+    </div>
 
-        <div class="row">
-            <div class="col-12">
+    <div class="row">
+        <div class="col-12">
+            @if (_locations.Count > 0)
+            {
                 <div id="weatherCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         @foreach (var loc in _locations)
@@ -48,10 +43,10 @@ else
                         }
                     </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
-}
+</div>
 
 <script>
     window.setActiveCarouselItem = (carouselId, index) => {

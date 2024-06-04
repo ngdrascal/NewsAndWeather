@@ -1,17 +1,10 @@
-﻿<div class="card text-center">
-    <div class="card-header">
-       Current Conditions
-    </div>
-    <div class="card-body">
-        <h6>Temp: @_temp&deg;F</h6>
-        <h6>Feels Like: @_feelsLike&deg;F</h6>
-        <h6>Humidity: @_humidity%</h6>
-    </div>
-</div>
+﻿<div>
+    <f4>Current Conditions</f4>
 
-<h6>Temp: @_temp&deg;F</h6>
-<h6>Feels Like: @_feelsLike&deg;F</h6>
-<h6>Humidity: @_humidity%</h6>
+    <h6>Temp: @_temp&deg;F</h6>
+    <h6>Feels Like: @_feelsLike&deg;F</h6>
+    <h6>Humidity: @_humidity%</h6>
+</div>
 
 @code {
     [Parameter] public WeatherDataClients.CurrentConditions? Conditions { get; set; }

@@ -1,5 +1,4 @@
 using NewsAndWeather.Components;
-using ResilientHttpClient;
 using WeatherDataClients;
 
 var builder = WebApplication.CreateBuilder(args);
