@@ -2,10 +2,13 @@
 @implements IDisposable
 @rendermode @(new InteractiveServerRenderMode(false))
 
-<span class="clock-time">@_hours</span>
-<span class="clock-colon blink">:</span>
-<span class="clock-time">@_minutes</span>
-<span class="clock-meridiem" style="padding-left:10px">@_meridiem</span>
+<div style="line-height: 1;">
+    <span class="clock-time">@_hours</span>
+    <span class="clock-time blink">:</span>
+    <span class="clock-time">@_minutes</span>
+    <span class="clock-meridiem">@_meridiem</span>
+</div>
+<h4 class="text-center">@_date</h4>
 
 @code {
     private Timer? _timer;
@@ -29,7 +32,8 @@
         _hours = currentDateTime.ToString("hh");
         _minutes = currentDateTime.ToString("mm");
         _meridiem = currentDateTime.ToString("tt");
-        _date = currentDateTime.ToString("MMMM d");
+
+        _date = currentDateTime.ToString("dddd MMMM d");
     }
 
     private void OnTimerElapsed()
