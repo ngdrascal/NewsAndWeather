@@ -1,9 +1,10 @@
 ﻿@using System.Timers
+
 @implements IDisposable
 @rendermode @(new InteractiveServerRenderMode(false))
 
 <div style="line-height: 1;">
-    <span class="clock-time">@_hours</span>
+    <span class="clock-time">@if(_addSpace){<span>&nbsp;</span>}@_hours</span>
     <span class="clock-time blink">:</span>
     <span class="clock-time">@_minutes</span>
     <span class="clock-meridiem">@_meridiem</span>
@@ -16,10 +17,13 @@
     private string? _minutes;
     private string? _meridiem;
     private string? _date;
+    private bool _addSpace = false;
 
     protected override void OnInitialized()
     {
-        FormatDateAndTime(DateTime.Now);
+        var now = DateTime.Now;
+        FormatDateAndTime(now);
+        _addSpace = SpaceNeeded(now);
 
         _timer = new Timer(1000);
         _timer.AutoReset = true;
@@ -27,13 +31,20 @@
         _timer.Elapsed += (_, _) => OnTimerElapsed();
     }
 
-    private void FormatDateAndTime(DateTime currentDateTime)
+    private void FormatDateAndTime(DateTime dt)
     {
-        _hours = currentDateTime.ToString("hh");
-        _minutes = currentDateTime.ToString("mm");
-        _meridiem = currentDateTime.ToString("tt");
+        var hour = dt.Hour > 12 ? dt.Hour - 12 : dt.Hour;
+        _hours = hour.ToString();
+        _minutes = dt.ToString("mm");
+        _meridiem = dt.ToString("tt");
 
-        _date = currentDateTime.ToString("dddd MMMM d");
+        _date = dt.ToString("dddd MMMM d");
+    }
+
+    private bool SpaceNeeded(DateTime dt)
+    {
+        var hour = dt.Hour > 12 ? dt.Hour - 12 : dt.Hour;
+        return hour < 10;
     }
 
     private void OnTimerElapsed()
