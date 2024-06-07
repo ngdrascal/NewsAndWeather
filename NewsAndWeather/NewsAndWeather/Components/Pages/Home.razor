@@ -11,17 +11,29 @@
         <div class="col-7">
             <Clock />
         </div>
-        <div class="col-2">
-            @if (_locations.Count > 0)
-            {
-                <CurrentConditions Conditions="@_locations[0].CurrentConditions" />
-            }
+        
+        <div class="col-5">
+            <div class="row">
+                <div class="col-12">
+                    @if (_locations.Count > 0)
+                    {
+                        <h4 class="text-center">@_locations[0].LocationName</h4>
+                    }
+                </div>
+                <div class="col-6">
+                    @if (_locations.Count > 0)
+                    {
+                        <CurrentConditions Conditions="@_locations[0].CurrentConditions" />
+                    }
+                </div>
+                <div class="col-6">
+                    <h1 class="text-center">78&deg;<span style="vertical-align: super; font-size: 16px;">F</span></h1>
+                    <img src="https://openweathermap.org/img/wn/01d@2x.png" style="width: 75px; height: 75px;" />
+                    <h4>clear sky</h4>
+                </div>
+            </div>
         </div>
-        <div class="col-3">
-        </div>
-    </div>
 
-    <div class="row">
         <div class="col-12">
             @* ReSharper disable once UnknownCssClass *@
             @if (_locations.Count > 0)
@@ -51,11 +63,11 @@
     </div>
 </div>
 
-<script>
-    window.setActiveCarouselItem = (carouselId, index) => {
-        document.getElementById(carouselId).carousel(index);
-    };
-</script>
+@* <script> *@
+@*     window.setActiveCarouselItem = (carouselId, index) => { *@
+@*         document.getElementById(carouselId).carousel(index); *@
+@*     }; *@
+@* </script> *@
 
 @code
 {

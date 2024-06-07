@@ -1,6 +1,4 @@
 ﻿<div>
-    <h1>Nashville</h1>
-    <h1>@(_temp)&deg<span class="degree-unit">F</span></h1>
     <h4><img src="icons/icons8-humidity-32-white.png" />@_humidity%</h4>
     <h4><img src="icons/icons8-umbrella-32-white.png" />@_pop%</h4>
     <h4><img src="icons/icons8-wind-32-white.png" />@_windSpeed mph</h4>
@@ -9,7 +7,6 @@
 @code {
     [Parameter] public WeatherDataClients.CurrentConditions? Conditions { get; set; }
 
-    private string _temp = string.Empty;
     private string _pop = string.Empty;
     private string _humidity = string.Empty;
     private string _windSpeed = string.Empty;
@@ -18,9 +15,8 @@
     {
         ArgumentNullException.ThrowIfNull(Conditions, nameof(Conditions));
 
-        _temp = Conditions.Temperature.ToString("F0");
         _humidity = Conditions.Humidity.ToString("F0");
-        _pop = 0.0.ToString("F0");
+        _pop = (Conditions.Pop * 100).ToString("F0");
         _windSpeed = Conditions.WindSpeed.ToString("F0");
 
         return Task.CompletedTask;

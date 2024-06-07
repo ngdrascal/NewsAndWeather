@@ -40,6 +40,7 @@ public class CurrentConditions
     public double WindSpeed { get; set; }
     public int WindDeg { get; set; }
     public double WindGust { get; set; }
+    public double Pop { get; set; }
     public Weather Weather { get; set; }
 }
 

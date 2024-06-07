@@ -63,7 +63,8 @@ public class OpenWeatherClient : IWeatherClient
             Visibility = (int)openWeather.current.visibility,
             WindSpeed = openWeather.current.wind_speed,
             WindDeg = (int)openWeather.current.wind_deg,
-            // WindGust = openWeather.current["wind_gust"]
+            // WindGust = openWeather.current["wind_gust"],
+            Pop = openWeather.daily[0]?.pop,
             Weather = new Weather
             {
                 Id = openWeather.current.weather[0].id,
