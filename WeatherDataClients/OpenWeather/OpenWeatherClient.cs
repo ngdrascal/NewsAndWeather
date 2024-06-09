@@ -36,8 +36,12 @@ public class OpenWeatherClient : IWeatherClient
     public async Task<WeatherData?> GetForecastsAsync()
     {
         if (_lastCacheRefresh + _cacheDuration > DateTime.Now)
+        {
+            Console.WriteLine("OpenWeatherClient: reading from cache");
             return _cache;
+        }
 
+        Console.WriteLine("OpenWeatherClient: calling API");
         var rawData = await GetWeatherDataAsync();
 
         if (rawData == null)

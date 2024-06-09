@@ -118,9 +118,9 @@ code {
 }
 
 @font-face {
-   font-family: 'digital';
-   src: url('fonts/digital-7.ttf') format('truetype');
-   font-weight: normal;
+   font-family: 'techology';
+   src: url('fonts/technology.bold.ttf') format('truetype');
+   font-weight: bold;
    font-style: normal;
 }
 
@@ -140,8 +140,10 @@ code {
 }
 
 .clock-date {
-   font-size: 20px;
-   font-weight: normal;
+   font-family: 'techology';
+   font-size: 40px;
+   font-weight: bold;
+   color: red;
 }
 
 .daily-card {
@@ -168,6 +170,11 @@ div.card-body {
 .card-body img {
    width:75px;
    height:75px;
+}
+
+.icon-cond {
+   width: 75px;
+   height: 75px;
 }
 
 .blink {

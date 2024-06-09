@@ -1,15 +1,36 @@
-﻿<div>
-    <h4><img src="icons/icons8-humidity-32-white.png" />@_humidity%</h4>
-    <h4><img src="icons/icons8-umbrella-32-white.png" />@_pop%</h4>
-    <h4><img src="icons/icons8-wind-32-white.png" />@_windSpeed mph</h4>
+﻿<div class="row">
+    <div class="col-12">
+        <h4 class="text-center">@LocationName</h4>
+    </div>
+    <div class="col-6">
+        <div>
+            <h4><img src="icons/icons8-humidity-32-white.png" />@_humidity%</h4>
+            <h4><img src="icons/icons8-umbrella-32-white.png" />@_pop%</h4>
+            <h4><img src="icons/icons8-wind-32-white.png" />@_windSpeed mph</h4>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="text-center">
+            <h1>
+                @_temp&deg;<span style="vertical-align: super; font-size: 16px;">F</span>
+            </h1>
+            <img src="@_iconUrl" class="icon-cond mx-auto d-block" />
+            <h4>@_description</h4>
+        </div>
+    </div>
 </div>
 
+
 @code {
+    [Parameter] public string? LocationName { get; set; }
     [Parameter] public WeatherDataClients.CurrentConditions? Conditions { get; set; }
 
     private string _pop = string.Empty;
     private string _humidity = string.Empty;
     private string _windSpeed = string.Empty;
+    private string _temp = string.Empty;
+    private string _description = string.Empty;
+    private string _iconUrl = string.Empty;
 
     protected override Task OnInitializedAsync()
     {
@@ -18,6 +39,9 @@
         _humidity = Conditions.Humidity.ToString("F0");
         _pop = (Conditions.Pop * 100).ToString("F0");
         _windSpeed = Conditions.WindSpeed.ToString("F0");
+        _temp = Conditions.Temperature.ToString("F0");
+        _description = Conditions.Weather.Description;
+        _iconUrl = "https://openweathermap.org/img/wn/" + Conditions.Weather.Icon + "@2x.png";
 
         return Task.CompletedTask;
     }

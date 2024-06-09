@@ -1,8 +1,12 @@
 ﻿@page "/"
-@using WeatherDataClients
+
+@implements IDisposable
 
 @inject IWeatherClientCollection WeatherClientCollection
 @inject IJSRuntime JSRuntime
+
+@using System.Timers
+@using WeatherDataClients
 
 <PageTitle>News and Weather</PageTitle>
 
@@ -11,27 +15,15 @@
         <div class="col-7">
             <Clock />
         </div>
-        
+
         <div class="col-5">
-            <div class="row">
-                <div class="col-12">
-                    @if (_locations.Count > 0)
-                    {
-                        <h4 class="text-center">@_locations[0].LocationName</h4>
-                    }
-                </div>
-                <div class="col-6">
-                    @if (_locations.Count > 0)
-                    {
-                        <CurrentConditions Conditions="@_locations[0].CurrentConditions" />
-                    }
-                </div>
-                <div class="col-6">
-                    <h1 class="text-center">78&deg;<span style="vertical-align: super; font-size: 16px;">F</span></h1>
-                    <img src="https://openweathermap.org/img/wn/01d@2x.png" style="width: 75px; height: 75px;" />
-                    <h4>clear sky</h4>
-                </div>
-            </div>
+            @if (_locations.Count > 0)
+            {
+                <CurrentConditions LocationName="@_locations[0].LocationName"
+                                   Conditions="@_locations[0].CurrentConditions">
+
+                </CurrentConditions>
+            }
         </div>
 
         <div class="col-12">
@@ -63,32 +55,43 @@
     </div>
 </div>
 
-@* <script> *@
-@*     window.setActiveCarouselItem = (carouselId, index) => { *@
-@*         document.getElementById(carouselId).carousel(index); *@
-@*     }; *@
-@* </script> *@
+<script>
+    window.setActiveCarouselItem = (carouselId, index) => {
+        //        document.getElementById(carouselId).carousel(index);
+    };
+</script>
 
 @code
 {
     private string _message = "Loading ...";
     private readonly List<WeatherData> _locations = new();
+    private Timer? _timer;
 
     protected override async Task OnInitializedAsync()
     {
+        _timer = new Timer(60 * 1000);
+        _timer.AutoReset = true;
+        _timer.Enabled = true;
+        _timer.Elapsed += (_, _) => OnTimerElapsed();
+
         try
         {
-            foreach (var client in WeatherClientCollection.GetAll())
-            {
-                var data = await client.GetForecastsAsync();
-                if (data != null)
-                    _locations.Add(data);
-            }
+            await RefreshDataAsync();
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
             _message = "Forecasts currently unavailable.";
+        }
+    }
+
+    private async Task RefreshDataAsync()
+    {
+        foreach (var client in WeatherClientCollection.GetAll())
+        {
+            var data = await client.GetForecastsAsync();
+            if (data != null)
+                _locations.Add(data);
         }
     }
 
@@ -103,5 +106,17 @@
     private async Task SetActiveItem(int index)
     {
         await JSRuntime.InvokeVoidAsync("setActiveCarouselItem", "weatherCarousel", 0);
+    }
+
+    private async void OnTimerElapsed()
+    {
+        await RefreshDataAsync();
+        Console.WriteLine("Timer elapsed");
+        await InvokeAsync(() => StateHasChanged());
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
     }
 }
