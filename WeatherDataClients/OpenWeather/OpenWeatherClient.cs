@@ -28,11 +28,6 @@ public class OpenWeatherClient : IWeatherClient
 
     public Location Location => _location;
 
-    public WeatherData? GetForecasts()
-    {
-        return GetForecastsAsync().Result;
-    }
-
     public async Task<WeatherData?> GetForecastsAsync()
     {
         if (_lastCacheRefresh + _cacheDuration > DateTime.Now)
@@ -61,9 +56,9 @@ public class OpenWeatherClient : IWeatherClient
             FeelsLike = openWeather.current.feels_like,
             Pressure = (int)openWeather.current.pressure,
             Humidity = (int)openWeather.current.humidity,
-            DewPoint = openWeather.current.dew_point,
+            // DewPoint = openWeather.current.dew_point,
             UltraVioletIndex = openWeather.current.uvi,
-            Clouds = (int)openWeather.current.clouds,
+            // Clouds = (int)openWeather.current.clouds,
             Visibility = (int)openWeather.current.visibility,
             WindSpeed = openWeather.current.wind_speed,
             WindDeg = (int)openWeather.current.wind_deg,

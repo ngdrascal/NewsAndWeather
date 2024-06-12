@@ -33,9 +33,9 @@ public class CurrentConditions
     public double FeelsLike { get; set; }
     public int Pressure { get; set; }
     public int Humidity { get; set; }
-    public double DewPoint { get; set; }
+    // public double DewPoint { get; set; }
     public double UltraVioletIndex { get; set; }
-    public int Clouds { get; set; }
+    // public int Clouds { get; set; }
     public int Visibility { get; set; }
     public double WindSpeed { get; set; }
     public int WindDeg { get; set; }
