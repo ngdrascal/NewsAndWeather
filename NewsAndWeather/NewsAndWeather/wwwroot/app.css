@@ -126,7 +126,7 @@ code {
 
 .clock-time {
    font-family: 'digital-mono';
-   font-size: 150px;
+   font-size: 160px;
    font-weight: normal;
    color: red;
 }
@@ -156,11 +156,11 @@ code {
    font-size: 16px;
 }
 
-.daily-high {
+.high-temp {
    color: #ff7b00;
 }
 
-.daily-low {
+.low-temp {
    color: #75B8D3;
 }
 

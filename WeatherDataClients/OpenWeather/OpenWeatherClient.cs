@@ -107,6 +107,7 @@ public class OpenWeatherClient : IWeatherClient
 
         return new WeatherData(
             _location.Name,
+            DateTime.Now,
              currentConditions,
              hourlyForecasts.ToArray(),
              dailyForecasts.ToArray()

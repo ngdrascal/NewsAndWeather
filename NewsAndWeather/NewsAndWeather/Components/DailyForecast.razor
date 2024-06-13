@@ -5,13 +5,13 @@
         @_forecastDate
     </div>
     <div class="card-body">
-        <img src="@_iconUrl" />
-        <h6 class="card-title">@Description</h6>
-        <h6>
-            <span class="daily-high">@((int)HighTemp)&#xB0;F</span>
+        <h6 class="card-title">
+            <span class="high-temp">@((int)HighTemp)&#xB0;F</span>
             <span>/</span>
-            <span class="daily-low">@((int)LowTemp)&deg;F</span>
+            <span class="low-temp">@((int)LowTemp)&deg;F</span>
         </h6>
+        <img src="@_iconUrl" />
+        <h6>@Description</h6>
     </div>
 </div>
 

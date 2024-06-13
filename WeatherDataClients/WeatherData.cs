@@ -4,6 +4,7 @@ public class WeatherData
 {
     public WeatherData(
         string locationName,
+        DateTime dateAndTime,
         CurrentConditions currentConditions,
         HourlyForecast[] hourlyForecasts,
         DailyForecast[] dailyForecasts)
@@ -15,12 +16,14 @@ public class WeatherData
         ArgumentNullException.ThrowIfNull(dailyForecasts,nameof(dailyForecasts));
 
         LocationName = locationName;
+        DateAndTime = dateAndTime;
         CurrentConditions = currentConditions;
         HourlyForecasts = hourlyForecasts;
         DailyForecasts = dailyForecasts;
     }
 
     public string LocationName { get; }
+    public DateTime DateAndTime { get; }
     public CurrentConditions CurrentConditions { get; }
     public HourlyForecast[] HourlyForecasts { get; }
     public DailyForecast[] DailyForecasts { get; }

@@ -21,6 +21,7 @@
             @if (_locations.Count > 0)
             {
                 <CurrentConditions LocationName="@_locations[0].LocationName"
+                                   DateAndTime="@_locations[0].DateAndTime"
                                    Conditions="@_locations[0].CurrentConditions">
 
                 </CurrentConditions>
