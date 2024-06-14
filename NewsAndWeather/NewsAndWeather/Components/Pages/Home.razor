@@ -1,5 +1,4 @@
 ﻿@page "/"
-@rendermode @(new InteractiveServerRenderMode(false))
 
 @implements IDisposable
 
@@ -101,19 +100,14 @@
     {
         if (firstRender)
         {
-            await SetActiveItem(0);
+            await JSRuntime.InvokeVoidAsync("setActiveCarouselItem", "weatherCarousel", 0);
         }
-    }
-
-    private async Task SetActiveItem(int index)
-    {
-        await JSRuntime.InvokeVoidAsync("setActiveCarouselItem", "weatherCarousel", 0);
     }
 
     private async void OnTimerElapsed()
     {
-        await RefreshDataAsync();
         Console.WriteLine("Timer elapsed");
+        await RefreshDataAsync();
         await InvokeAsync(() => StateHasChanged());
     }
 

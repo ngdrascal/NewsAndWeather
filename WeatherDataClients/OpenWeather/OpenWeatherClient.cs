@@ -32,11 +32,11 @@ public class OpenWeatherClient : IWeatherClient
     {
         if (_lastCacheRefresh + _cacheDuration > DateTime.Now)
         {
-            Console.WriteLine("OpenWeatherClient: reading from cache");
+            Console.WriteLine($"[{DateTime.Now}] OpenWeatherClient: reading from cache");
             return _cache;
         }
 
-        Console.WriteLine("OpenWeatherClient: calling API");
+        Console.WriteLine($"[{DateTime.Now}] OpenWeatherClient: calling API");
         var rawData = await GetWeatherDataAsync();
 
         if (rawData == null)
@@ -108,9 +108,9 @@ public class OpenWeatherClient : IWeatherClient
         return new WeatherData(
             _location.Name,
             DateTime.Now,
-             currentConditions,
-             hourlyForecasts.ToArray(),
-             dailyForecasts.ToArray()
+            currentConditions,
+            hourlyForecasts.ToArray(),
+            dailyForecasts.ToArray()
         );
     }
 

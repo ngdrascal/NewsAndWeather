@@ -1,6 +1,4 @@
-﻿@rendermode @(new InteractiveServerRenderMode(false))
-
-<div class="row">
+﻿<div class="row">
     <div class="col-12">
         <h4 class="text-center">@LocationName</h4>
     </div>
@@ -9,7 +7,7 @@
             <h4><img src="icons/icons8-humidity-32-white.png" />@_humidity%</h4>
             <h4><img src="icons/icons8-umbrella-32-white.png" />@_pop%</h4>
             <h4><img src="icons/icons8-wind-32-white.png" />@_windSpeed mph</h4>
-            <h6>@DateTime.Now.ToShortTimeString()</h6>
+            <h6>@_lastUpdate</h6>
         </div>
     </div>
     <div class="col-6">
@@ -35,6 +33,7 @@
     private string _temp = string.Empty;
     private string _description = string.Empty;
     private string _iconUrl = string.Empty;
+    private string _lastUpdate = string.Empty;
 
     protected override Task OnInitializedAsync()
     {
@@ -46,6 +45,7 @@
         _temp = Conditions.Temperature.ToString("F0");
         _description = Conditions.Weather.Description;
         _iconUrl = "https://openweathermap.org/img/wn/" + Conditions.Weather.Icon + "@2x.png";
+        _lastUpdate = DateAndTime.ToShortTimeString();
 
         return Task.CompletedTask;
     }
