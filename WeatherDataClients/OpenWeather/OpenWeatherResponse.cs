@@ -1,12 +1,7 @@
 ﻿/*
 namespace WeatherDataClients.OpenWeather;
 
-public class Rootobject
-{
-    public Class1[] Property1 { get; set; }
-}
-
-public class Class1
+public class OpenWeatherResponse
 {
     public float Lat { get; set; }
     public float Lon { get; set; }

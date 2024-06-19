@@ -11,8 +11,8 @@ builder.Services
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-// builder.Services.AddSingleton<IHttpClientFactory, ResilientHttpClientFactory>();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("default");
+
 builder.Services.AddSingleton<IApiKeyProvider, ApiKeyProvider>();
 builder.Services.AddSingleton<ILocationProvider, LocationProvider>();
 builder.Services.AddSingleton<IWeatherClientCollection>(sp =>
@@ -39,7 +39,8 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // The default HSTS value is 30 days. You may want to change this for production scenarios,
+    // see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

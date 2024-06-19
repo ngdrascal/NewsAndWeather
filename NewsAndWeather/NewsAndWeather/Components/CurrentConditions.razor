@@ -24,7 +24,7 @@
 
 @code {
     [Parameter] public string? LocationName { get; set; }
-    [Parameter] public DateTime DateAndTime { get; set; }
+    [Parameter] public DateTime LastUpdateTime { get; set; }
     [Parameter] public WeatherDataClients.CurrentConditions? Conditions { get; set; }
 
     private string _pop = string.Empty;
@@ -45,8 +45,14 @@
         _temp = Conditions.Temperature.ToString("F0");
         _description = Conditions.Weather.Description;
         _iconUrl = "https://openweathermap.org/img/wn/" + Conditions.Weather.Icon + "@2x.png";
-        _lastUpdate = DateAndTime.ToShortTimeString();
+        _lastUpdate = LastUpdateTime.ToShortTimeString();
 
         return Task.CompletedTask;
     }
+
+    protected override Task OnParametersSetAsync()
+    {
+        return base.OnParametersSetAsync();
+    }
+
 }

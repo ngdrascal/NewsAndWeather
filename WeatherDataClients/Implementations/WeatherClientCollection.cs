@@ -19,11 +19,10 @@ public class WeatherClientCollection : IWeatherClientCollection
 
     public void AddClient(Location location, TimeSpan cacheDuration)
     {
-        if (location is null)
-            throw new ArgumentNullException(nameof(location));
+        ArgumentNullException.ThrowIfNull(location, nameof(location));
 
         if (string.IsNullOrWhiteSpace(location.Name))
-            throw new ArgumentException($"Parameter {nameof(location)} cannot have a null or empty {nameof(location.Name)}", 
+            throw new ArgumentException($"Parameter {nameof(location)} cannot have a null or empty {nameof(location.Name)}",
                 nameof(location.Name));
 
         var name = location.Name.ToUpper();
