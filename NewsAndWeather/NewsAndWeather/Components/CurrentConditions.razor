@@ -35,8 +35,10 @@
     private string _iconUrl = string.Empty;
     private string _lastUpdate = string.Empty;
 
-    protected override Task OnInitializedAsync()
+    protected override Task OnParametersSetAsync()
     {
+        base.OnParametersSetAsync();
+        
         ArgumentNullException.ThrowIfNull(Conditions, nameof(Conditions));
 
         _humidity = Conditions.Humidity.ToString("F0");
@@ -48,11 +50,6 @@
         _lastUpdate = LastUpdateTime.ToShortTimeString();
 
         return Task.CompletedTask;
-    }
-
-    protected override Task OnParametersSetAsync()
-    {
-        return base.OnParametersSetAsync();
     }
 
 }

@@ -49,9 +49,12 @@
                                 </div>
                             </div>
                         }
-                        @(_activeValue = "active")
                     </div>
                 </div>
+            }
+            else
+            {
+                <h1>@_message</h1>
             }
         </div>
     </div>
@@ -97,6 +100,7 @@
     {
         Console.WriteLine($"[{DateTime.Now}] Timer elapsed");
         await RefreshDataAsync();
+        _activeValue = "active";
         await InvokeAsync(() => StateHasChanged());
     }
 

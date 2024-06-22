@@ -23,8 +23,10 @@
     private string? _forecastDate;
     private string? _iconUrl;
 
-    protected override void OnInitialized()
+    protected override Task OnParametersSetAsync()
     {
+        base.OnParametersSetAsync();
+
         if (Date.Date == DateTime.Today)
             _forecastDate = "Today";
         else if (Date.Date == DateTime.Today.AddDays(1))
@@ -33,5 +35,7 @@
             _forecastDate = Date.LocalDateTime.ToString("dddd");
 
         _iconUrl = $"https://openweathermap.org/img/wn/{Icon}@2x.png";
+
+        return Task.CompletedTask;
     }
 }
