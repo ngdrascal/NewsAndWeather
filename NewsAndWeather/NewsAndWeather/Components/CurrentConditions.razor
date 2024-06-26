@@ -38,7 +38,7 @@
     protected override Task OnParametersSetAsync()
     {
         base.OnParametersSetAsync();
-        
+
         ArgumentNullException.ThrowIfNull(Conditions, nameof(Conditions));
 
         _humidity = Conditions.Humidity.ToString("F0");

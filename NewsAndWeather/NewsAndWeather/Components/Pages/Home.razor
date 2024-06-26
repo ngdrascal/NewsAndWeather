@@ -29,28 +29,7 @@
         <div class="col-12">
             @if (_locationWeather.Count > 0)
             {
-                @* ReSharper disable once UnknownCssClass *@
-                <div id="weatherCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @foreach (var loc in _locationWeather)
-                        {
-                            <div class="carousel-item @_activeValue">
-                                @(_activeValue = string.Empty)
-                                <h5>@loc.LocationName</h5>
-                                <div class="card-group">
-                                    @foreach (var dailyForecast in loc.DailyForecasts.Take(6))
-                                    {
-                                        <DailyForecast Date="@dailyForecast.Date"
-                                                       LowTemp="@dailyForecast.LowTemp"
-                                                       HighTemp="@dailyForecast.HighTemp"
-                                                       Description="@dailyForecast.Weather.Description"
-                                                       Icon="@dailyForecast.Weather.Icon"/>
-                                    }
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
+                <SixDayForecast LocationWeather="@_locationWeather"></SixDayForecast>
             }
             else
             {
@@ -65,7 +44,6 @@
     private string _message = "Loading ...";
     private readonly List<WeatherData> _locationWeather = new();
     private Timer? _timer;
-    private string _activeValue = "active";
 
     protected override async Task OnInitializedAsync()
     {
@@ -100,7 +78,6 @@
     {
         Console.WriteLine($"[{DateTime.Now}] Timer elapsed");
         await RefreshDataAsync();
-        _activeValue = "active";
         await InvokeAsync(() => StateHasChanged());
     }
 
