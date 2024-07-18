@@ -129,14 +129,21 @@ public class OpenWeatherClient : IWeatherClient
         url.Append("&appid=");
         url.Append(_apiKey);
 
-        var response = await _httpClient.GetAsync(url.ToString());
-        response.EnsureSuccessStatusCode();
-        if (response.StatusCode != HttpStatusCode.OK)
+        try
+        {
+            var response = await _httpClient.GetAsync(url.ToString());
+            response.EnsureSuccessStatusCode();
+            if (response.StatusCode != HttpStatusCode.OK)
+                return null;
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<ExpandoObject>(json);
+            return data;
+        }
+        catch(Exception)
+        {
             return null;
-
-        var json = await response.Content.ReadAsStringAsync();
-
-        var data = JsonConvert.DeserializeObject<ExpandoObject>(json);
-        return data;
+        }
     }
 }
