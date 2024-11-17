@@ -10,6 +10,9 @@ namespace WeatherDataClients.Tests;
 
 public class OpenWeatherClientTests
 {
+    // GIVEN: a valid API key
+    // WHEN: retrieving a forecast
+    // THEN: the forecast should not be null
     [Test]
     public async Task Test1()
     {
@@ -29,11 +32,13 @@ public class OpenWeatherClientTests
         Assert.That(weatherData, Is.Not.Null);
     }
 
+    // GIVEN: a valid configuration containing multiple locations
+    // WHEN: retrieving forecasts for all locations
+    // THEN: the number of clients should be equal to the number of locations
     [Test]
     public async Task Test2()
     {
         // ARRANGE:
-
         var configuration = BuildConfiguration();
         var httpClientFactory = new ResilientHttpClientFactory();
         var apiKeyProvider = new ApiKeyProvider(configuration);

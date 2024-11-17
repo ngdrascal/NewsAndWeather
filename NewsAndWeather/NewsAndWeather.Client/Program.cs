@@ -1,5 +1,13 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
+namespace NewsAndWeather.Client;
 
-await builder.Build().RunAsync();
+internal class Program
+{
+    static async Task Main(string[] args)
+    {
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+        await builder.Build().RunAsync();
+    }
+}
