@@ -1,7 +1,88 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@implements IDisposable
 
-<h1>Hello, world!</h1>
+@inject IWeatherClientCollection WeatherClientCollection
 
-Welcome to your new app.
+@using System.Timers
+@using WeatherDataClients
+
+<PageTitle>News and Weather</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-7">
+            <Clock />
+        </div>
+
+        <div class="col-5">
+            @if (_locationWeather.Count > 0)
+            {
+                <CurrentConditions LocationName="@_locationWeather[0].LocationName"
+                                   LastUpdateTime="@_locationWeather[0].LastRefreshTime"
+                                   Conditions="@_locationWeather[0].CurrentConditions">
+
+                </CurrentConditions>
+            }
+        </div>
+
+        <div class="col-12">
+            @if (_locationWeather.Count > 0)
+            {
+                <SixDayForecast LocationWeather="@_locationWeather"></SixDayForecast>
+            }
+            else
+            {
+                <h1>@_message</h1>
+            }
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private string _message = "Loading ...";
+    private readonly List<WeatherData> _locationWeather = new();
+    private Timer? _timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _timer = new Timer(60 * 1000);
+        _timer.AutoReset = true;
+        _timer.Enabled = true;
+        _timer.Elapsed += (_, _) => OnTimerElapsed();
+
+        try
+        {
+            await RefreshDataAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            _message = "Forecasts currently unavailable.";
+        }
+    }
+
+    private async Task RefreshDataAsync()
+    {
+        _locationWeather.Clear();
+        foreach (var client in WeatherClientCollection.GetAll())
+        {
+            var data = await client.GetForecastsAsync();
+            if (data != null)
+                _locationWeather.Add(data);
+        }
+    }
+
+    private async void OnTimerElapsed()
+    {
+        Console.WriteLine($"[{DateTime.Now}] Timer elapsed");
+        await RefreshDataAsync();
+        await InvokeAsync(() => StateHasChanged());
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+}

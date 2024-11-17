@@ -1,0 +1,41 @@
+﻿<div class="card daily-card text-center">
+    <div class="card-header">
+        @_forecastDate
+    </div>
+    <div class="card-body">
+        <h6 class="card-title">
+            <span class="high-temp">@((int)HighTemp)&#xB0;F</span>
+            <span>/</span>
+            <span class="low-temp">@((int)LowTemp)&deg;F</span>
+        </h6>
+        <img src="@_iconUrl" />
+        <h6>@Description</h6>
+    </div>
+</div>
+
+@code {
+    [Parameter] public DateTimeOffset Date { get; set; }
+    [Parameter] public double HighTemp { get; set; }
+    [Parameter] public double LowTemp { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Icon { get; set; }
+
+    private string? _forecastDate;
+    private string? _iconUrl;
+
+    protected override Task OnParametersSetAsync()
+    {
+        base.OnParametersSetAsync();
+
+        if (Date.Date == DateTime.Today)
+            _forecastDate = "Today";
+        else if (Date.Date == DateTime.Today.AddDays(1))
+            _forecastDate = "Tomorrow";
+        else
+            _forecastDate = Date.LocalDateTime.ToString("dddd");
+
+        _iconUrl = $"https://openweathermap.org/img/wn/{Icon}@2x.png";
+
+        return Task.CompletedTask;
+    }
+}

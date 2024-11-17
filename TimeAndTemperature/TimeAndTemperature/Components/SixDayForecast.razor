@@ -1,0 +1,40 @@
+﻿@using WeatherDataClients
+@* ReSharper disable once UnknownCssClass *@
+<div id="weatherCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @foreach (var loc in LocationWeather)
+        {
+            <div class="carousel-item @_activeValue">
+                @(_activeValue = string.Empty)
+                <h5>@loc.LocationName</h5>
+                <div class="card-group">
+                    @foreach (var dailyForecast in loc.DailyForecasts.Take(6))
+                    {
+                        <DailyForecast Date="@dailyForecast.Date"
+                                       LowTemp="@dailyForecast.LowTemp"
+                                       HighTemp="@dailyForecast.HighTemp"
+                                       Description="@dailyForecast.Weather.Description"
+                                       Icon="@dailyForecast.Weather.Icon" />
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<WeatherData> LocationWeather { get; set; } = new();
+
+    private string _activeValue = "active";
+
+    protected override Task OnParametersSetAsync()
+    {
+        base.OnParametersSetAsync();
+
+        _activeValue = "active";
+
+        return Task.CompletedTask;
+    }
+
+}
