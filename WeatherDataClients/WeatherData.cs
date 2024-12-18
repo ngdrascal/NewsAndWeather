@@ -39,7 +39,7 @@ public class CurrentConditions
     // public double DewPoint { get; set; }
     public double UltraVioletIndex { get; set; }
     // public int Clouds { get; set; }
-    public int Visibility { get; set; }
+    public int? Visibility { get; set; }
     public double WindSpeed { get; set; }
     public int WindDeg { get; set; }
     public double WindGust { get; set; }

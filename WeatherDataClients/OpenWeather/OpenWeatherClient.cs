@@ -59,7 +59,7 @@ public class OpenWeatherClient : IWeatherClient
             // DewPoint = openWeather.current.dew_point,
             UltraVioletIndex = openWeather.current.uvi,
             // Clouds = (int)openWeather.current.clouds,
-            Visibility = (int)openWeather.current.visibility,
+            Visibility = (int?)openWeather.current.visibility,
             WindSpeed = openWeather.current.wind_speed,
             WindDeg = (int)openWeather.current.wind_deg,
             // WindGust = openWeather.current["wind_gust"],
