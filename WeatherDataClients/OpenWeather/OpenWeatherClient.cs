@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 
@@ -47,6 +46,59 @@ public class OpenWeatherClient : IWeatherClient
         return _cache;
     }
 
+    private WeatherData MapData(OpenWeatherResponse openWeather)
+    {
+        var currentConditions = new CurrentConditions
+        {
+            DateAndTime = DateTimeOffset.FromUnixTimeSeconds(openWeather.Current.Dt),
+            Temperature = openWeather.Current.Temp,
+            FeelsLike = openWeather.Current.FeelsLike,
+            Pressure = openWeather.Current.Pressure,
+            Humidity = openWeather.Current.Humidity,
+            UltraVioletIndex = openWeather.Current.Uvi,
+            Visibility = openWeather.Current.Visibility,
+            WindSpeed = openWeather.Current.WindSpeed,
+            WindDeg = openWeather.Current.WindDeg,
+            Pop = openWeather.Daily[0].Pop,
+            Weather = new Weather
+            {
+                Id = openWeather.Current.Weather[0].Id,
+                Main = openWeather.Current.Weather[0].Main,
+                Description = openWeather.Current.Weather[0].Description,
+                Icon = openWeather.Current.Weather[0].Icon
+            }
+        };
+
+        var hourlyForecasts = openWeather.Hourly.Select(hour => new HourlyForecast
+        {
+            Temperature = hour.Temp,
+            ProbabilityOfPrecipitation = hour.Pop
+        }).ToList();
+
+        var dailyForecasts = openWeather.Daily.Select(day => new DailyForecast
+        {
+            Date = DateTimeOffset.FromUnixTimeSeconds(day.Dt),
+            HighTemp = day.Temp.Max,
+            LowTemp = day.Temp.Min,
+            Weather = new Weather
+            {
+                Id = day.Weather[0].Id,
+                Main = day.Weather[0].Main,
+                Description = day.Weather[0].Description,
+                Icon = day.Weather[0].Icon
+            }
+        }).ToList();
+
+        return new WeatherData(
+            _location.Name,
+            DateTime.Now,
+            currentConditions,
+            hourlyForecasts.ToArray(),
+            dailyForecasts.ToArray()
+        );
+    }
+
+    /*
     private WeatherData MapData(dynamic openWeather)
     {
         var currentConditions = new CurrentConditions
@@ -64,7 +116,7 @@ public class OpenWeatherClient : IWeatherClient
             WindDeg = (int)openWeather.current.wind_deg,
             // WindGust = openWeather.current["wind_gust"],
             Pop = openWeather.daily[0]?.pop,
-            Weather = new Weather
+            WeatherDescriptor = new WeatherDescriptor
             {
                 Id = openWeather.current.weather[0].id,
                 Main = openWeather.current.weather[0].main,
@@ -93,7 +145,7 @@ public class OpenWeatherClient : IWeatherClient
                 Date = DateTimeOffset.FromUnixTimeSeconds(day.dt),
                 HighTemp = day.temp.max,
                 LowTemp = day.temp.min,
-                Weather = new Weather
+                WeatherDescriptor = new WeatherDescriptor
                 {
                     Id = day.weather[0].id,
                     Main = day.weather[0].main,
@@ -113,8 +165,9 @@ public class OpenWeatherClient : IWeatherClient
             dailyForecasts.ToArray()
         );
     }
+    */
 
-    private async Task<dynamic?> GetWeatherDataAsync()
+    private async Task<OpenWeatherResponse?> GetWeatherDataAsync()
     {
         var url = new StringBuilder();
         url.Append("https://api.openweathermap.org");
@@ -138,7 +191,7 @@ public class OpenWeatherClient : IWeatherClient
 
             var json = await response.Content.ReadAsStringAsync();
 
-            var data = JsonConvert.DeserializeObject<ExpandoObject>(json);
+            var data = JsonConvert.DeserializeObject<OpenWeatherResponse>(json);
             return data;
         }
         catch(Exception)
