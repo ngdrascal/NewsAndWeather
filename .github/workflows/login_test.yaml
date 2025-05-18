@@ -1,11 +1,13 @@
 
 on:
-  push:
-    branches: [ "master" ]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: string
 
 name: Run Azure Login With a Service Principal Secret
-
 jobs:
 
   build-and-deploy:
