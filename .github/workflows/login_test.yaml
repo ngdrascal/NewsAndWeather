@@ -2,6 +2,9 @@
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+
 name: Run Azure Login With a Service Principal Secret
 jobs:
   build-and-deploy:
