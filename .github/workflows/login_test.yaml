@@ -9,11 +9,12 @@ on:
 
 name: Run Azure Login With a Service Principal Secret
 jobs:
-
   build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
+    environment:
+      name: development
 
+    steps:
     - uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
