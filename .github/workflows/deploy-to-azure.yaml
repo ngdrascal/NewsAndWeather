@@ -19,6 +19,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    environment:
+      name: development
+
+    env:
+        ACTION_STEP_DEBUG: true
+
     steps:
       # Check out the repo
       - uses: actions/checkout@main
