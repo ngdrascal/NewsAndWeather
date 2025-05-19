@@ -1,15 +1,19 @@
-name: Deploy to Azure Web App
+name: Build and Deploy to Azure Web App
 
-on: [push]
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
 
 permissions:
-      id-token: write
-      contents: read
+    id-token: write
+    contents: read
 
 env:
-  AZURE_WEBAPP_NAME: timeandtemp    # Set this to your application's name
+  AZURE_WEBAPP_NAME: timeandtemp      # Set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # Set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '9.0'           # Set this to the dot net version to use
+  DOTNET_VERSION: '9.0.x'             # Set this to the dot net version to use
 
 jobs:
   build:
