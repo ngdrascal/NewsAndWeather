@@ -1,9 +1,6 @@
 name: Build & Deploy
 
 on:
-  push:
-    branches:
-    - master
   workflow_dispatch:
 
 permissions:
