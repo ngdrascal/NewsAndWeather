@@ -4,7 +4,7 @@ on:
 permissions:
   id-token: write
 
-name: Run Azure Login With a Service Principal Secret
+name: Login-Test
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
